@@ -2,77 +2,49 @@ import React, { useState, useEffect } from 'react';
 import Form from './Form/Form';
 import Filter from './Filter/Filter';
 import NameList from './NameList/NameList';
-import shortid from 'shortid';
 import store from '../redux/phonebook-reduser';
-import * as actions from '../redux/phonebook-action'
+import * as actions from '../redux/phonebook-action';
+import { connect } from 'react-redux';
 
-export default function App() {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+function App() {
+  // const [contacts, setContacts] = useState([]);
+  // const [filter, setFilter] = useState('');
 
-  const handleSubmitForm = (name, number) => {
-    const checkname = contacts.find(contact =>
-      contact.name.toLowerCase().includes(name.toLowerCase())
-    );
+  // const getVisibleContacts = () => {
+  //   return contacts.filter(contact =>
+  //     contact.name.toLowerCase().includes(filter.toLowerCase())
+  //   );
+  // };
 
-    store.dispatch(actions.addContact(name, number));
+  // const visibleContacts = getVisibleContacts();
 
-    if (!checkname) {
-      const contact = {
-        id: shortid.generate(),
-        name: name,
-        number: number,
-      };
-      
-      
-      
+  // const changeFilter = e => {
+  //   setFilter(e.currentTarget.value);
+  // };
 
-      setContacts([contact, ...contacts]);
-    } else {
-      alert(name + ' is already in contact list');
-    }
-  };
+  // useEffect(() => {
+  //   if (localStorage.getItem('contacts')) {
+  //     const currentContactList = JSON.parse(localStorage.getItem('contacts'));
+  //     setContacts(currentContactList);
+  //   }
+  // }, []);
 
-  const getVisibleContacts = () => {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const visibleContacts = getVisibleContacts();
-
-  const changeFilter = e => {
-    setFilter(e.currentTarget.value);
-  };
-
-  const deleteContact = contactId => {
-    store.dispatch(actions.deleteContact(contactId));
-    setContacts(contacts.filter(contact => contact.id !== contactId));
-  }
-  
-
-  useEffect(() => {
-    if (localStorage.getItem('contacts')) {
-      const currentContactList = JSON.parse(localStorage.getItem('contacts'));
-      setContacts(currentContactList);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
+  // useEffect(() => {
+  //   localStorage.setItem('contacts', JSON.stringify(contacts));
+  // }, [contacts]);
 
   return (
     <>
       <h1>Phonebook</h1>
-      <Form onSubmit={handleSubmitForm} />
+      <Form />
 
       <h2>Contacts</h2>
-      <Filter changeFilter={changeFilter} filter={filter} />
-      <NameList
-        visibleContacts={visibleContacts}
-        onDeleteContact={deleteContact}
-      />
+      <Filter />
+      <NameList />
     </>
   );
 }
+
+const mapStatetoProps = state => ({});
+
+export default connect(mapStatetoProps, null)(App);
