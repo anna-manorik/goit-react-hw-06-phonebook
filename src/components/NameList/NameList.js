@@ -7,14 +7,15 @@ import { connect } from 'react-redux';
 
 const NameList = ({ visibleContacts, onDeleteContact }) => (
   <ul className={styles.list}>
-    {visibleContacts && visibleContacts.map(({ id, name, number }) => (
-      <NameItem
-        id={id}
-        name={name}
-        number={number}
-        onDeleteContact={() => onDeleteContact(id)}
-      />
-    ))}
+    {visibleContacts &&
+      visibleContacts.map(({ id, name, number }) => (
+        <NameItem
+          id={id}
+          name={name}
+          number={number}
+          onDeleteContact={() => onDeleteContact(id)}
+        />
+      ))}
   </ul>
 );
 
@@ -23,12 +24,20 @@ NameList.propTypes = {
   onDeleteContact: PropTypes.func,
 };
 
-const mapStatetoProps = state => ({
-  visibleContacts: state.contactReduser,
-});
+const mapStateToProps = state => {
+  const { contactReduser, filterReduser } = state;
+
+  const visibleContacts = contactReduser.filter(contact =>
+    contact.name.toLowerCase().includes(filterReduser.toLowerCase())
+  );
+
+  return {
+    visibleContacts: visibleContacts,
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   onDeleteContact: id => dispatch(actions.deleteContact(id)),
 });
 
-export default connect(mapStatetoProps, mapDispatchToProps)(NameList);
+export default connect(mapStateToProps, mapDispatchToProps)(NameList);
