@@ -6,7 +6,7 @@ const NameItem = ({ id, name, number, onDeleteContact }) => (
  
       <li key={id} className={styles.item}>
         {name}: {number}
-        <button className={styles.button} onClick={() => onDeleteContact(id)}>
+        <button className={styles.button} onClick={onDeleteContact}>
           Delete contact
         </button>
       </li>
