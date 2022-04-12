@@ -1,16 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import * as actions from '../../redux/phonebook-action';
+import { connect } from 'react-redux';
 
-const Filter = ({ changeFilter, filter }) => (
+const Filter = ({ filterValue, changeFilter }) => (
   <label>
     Search:
-    <input type="text" value={filter} onChange={changeFilter} />
+    <input type="text" value={filterValue} onChange={changeFilter} />
   </label>
 );
 
 Filter.propTypes = {
+  filterValue: PropTypes.string,
   changeFilter: PropTypes.func,
-  filter: PropTypes.string,
 };
 
-export default Filter;
+const mapStateToProps = state => ({
+  filterValue: state.filterReduser,
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeFilter: e => dispatch(actions.changeFilter(e.target.value)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
